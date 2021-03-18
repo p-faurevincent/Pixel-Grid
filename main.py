@@ -3,6 +3,7 @@
 import time
 from rpi_ws281x import *
 import argparse
+import random
 
 # LED strip configuration:
 LED_COUNT      = 256     # Number of LED pixels.
@@ -21,6 +22,7 @@ BLUE = Color(0,0,20)
 YELLOW = Color(20,20,0)
 CYAN = Color(0,20,20)
 PINK = Color(20,0,20)
+VIOLET = Color(10,0,20)
 ORANGE = Color(20,10,0)
 
 
@@ -57,9 +59,9 @@ class Grid:
             index = cls.width - x - 1 + y * cls.width    
         return index    
     
-    def square(self, color, x, y):
-        for i in range(3):
-            for j in range(3):
+    def square(self, color, x=0, y=15):
+        for i in range(16):
+            for j in range(1):
                 self.pixels[self._get_pixel_index(i+x,j+y)].color = color  
     
     def clear(self):
@@ -219,6 +221,30 @@ def print_grid(strip, grid):
         strip.setPixelColor(pixel.index, pixel.color)
     strip.show()
 
+
+def randomize(strip, grid):
+    for t in range(250):
+        for j in range(16):
+            for i in range(16):
+                red = random.randint(0, 255)
+                green = random.randint(0, 255)
+                blue = random.randint(0, 255)
+                color = Color(red, green, blue)
+                grid.pixels[grid._get_pixel_index(i,j)].color = color
+        print_grid(strip, grid)
+        time.sleep(0.1)
+
+
+def square_wipe(strip, grid, color=Color(12,5,5)):
+    for j in range(8):
+        for i in range(16):
+            grid.pixels[grid._get_pixel_index(i,j)].color = color
+            grid.pixels[grid._get_pixel_index(j,i)].color = color
+            grid.pixels[grid._get_pixel_index(i,grid.height - j - 1)].color = color
+            grid.pixels[grid._get_pixel_index(grid.height - j - 1,i)].color = color
+        print_grid(strip, grid)
+        time.sleep(0.01)
+
 # Main program logic follows:
 if __name__ == '__main__':
     # Process arguments
@@ -239,6 +265,26 @@ if __name__ == '__main__':
 
     try:
         while True:
+            ma_grille.square(Color(255,255,255))
+            print_grid(strip, ma_grille)
+            time.sleep(5)
+            randomize(strip,ma_grille)
+            square_wipe(strip, ma_grille, RED)
+            square_wipe(strip, ma_grille, ORANGE)
+            square_wipe(strip, ma_grille, YELLOW)
+            square_wipe(strip, ma_grille, GREEN)
+            square_wipe(strip, ma_grille, CYAN)
+            square_wipe(strip, ma_grille, BLUE)
+            square_wipe(strip, ma_grille, VIOLET)
+            square_wipe(strip, ma_grille, PINK)
+            square_wipe(strip, ma_grille, RED)
+            square_wipe(strip, ma_grille, ORANGE)
+            square_wipe(strip, ma_grille, YELLOW)
+            square_wipe(strip, ma_grille, GREEN)
+            square_wipe(strip, ma_grille, CYAN)
+            square_wipe(strip, ma_grille, BLUE)
+            square_wipe(strip, ma_grille, VIOLET)
+            square_wipe(strip, ma_grille, PINK)
             ma_grille.zero(RED)
             print_grid(strip, ma_grille)
             time.sleep(1)
