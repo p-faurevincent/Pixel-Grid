@@ -265,10 +265,6 @@ if __name__ == '__main__':
 
     try:
         while True:
-            ma_grille.square(Color(255,255,255))
-            print_grid(strip, ma_grille)
-            time.sleep(5)
-            randomize(strip,ma_grille)
             square_wipe(strip, ma_grille, RED)
             square_wipe(strip, ma_grille, ORANGE)
             square_wipe(strip, ma_grille, YELLOW)
